@@ -13,6 +13,10 @@ import ImportContact from './pages/import-contact/ImportContact'
 import Layout from './components/Layout'
 import Templates from './pages/templates/templates'
 import Settings from './pages/settings/settings'
+import History from './pages/history/history'
+import NewTemplatePage from './pages/templates/new'
+import { Toaster } from 'sonner'
+import EditTemplatePage from './pages/templates/edit-template-page'
 
 const queryClient = new QueryClient()
 
@@ -31,12 +35,16 @@ const App = () => (
             <Route index element={<Dashboard />} />
             <Route path='import' element={<ImportContact />} />
             <Route path='templates' element={<Templates />} />
+            <Route path='template/new' element={<NewTemplatePage />} />
+            <Route path='template/:id/edit' element={<EditTemplatePage />} />
             <Route path='settings' element={<Settings />} />
+            <Route path='history' element={<History />} />
           </Route>
 
           {/* <Route path='*' element={<NotFound />} /> */}
         </Routes>
       </BrowserRouter>
+      <Toaster />
     </TooltipProvider>
   </QueryClientProvider>
 )

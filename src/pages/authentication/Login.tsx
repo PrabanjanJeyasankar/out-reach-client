@@ -1,24 +1,44 @@
+// src/pages/auth/Login.tsx
 import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import AppLogo from '@/components/app-logo'
-import { validateAuthForm } from '@/lib/validators'
-import { Link } from 'react-router-dom'
+import authService from '@/services/authServices'
+import { useAuthStore } from '@/store/auth-store'
+import { toast } from 'sonner'
+import { validateAuthForm, type AuthFormValues } from '@/lib/validators'
 
 export default function Login() {
+  const navigate = useNavigate()
+  const setUser = useAuthStore((s) => s.setUser)
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<AuthFormValues>({})
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // basic validation
     const formErrors = validateAuthForm({ email, password })
     setErrors(formErrors)
 
-    if (Object.keys(formErrors).length === 0) {
-      console.log('Logging in with', { email, password })
-      // TODO: Submit to backend
+    const hasErrors = Object.keys(formErrors).length > 0
+    if (hasErrors) return
+
+    setIsSubmitting(true)
+    try {
+      const user = await authService.login({ email, password })
+      setUser(user)
+      toast.success('Logged in successfully!')
+      navigate('/', { replace: true })
+    } catch {
+      toast.error('Login failed')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -36,7 +56,7 @@ export default function Login() {
                   <span className='sr-only'>Out Reach.</span>
                 </a>
                 <h1 className='text-xl font-bold'>Welcome to Out Reach.</h1>
-                <div className='text-center text-sm '>
+                <div className='text-center text-sm'>
                   Don&apos;t have an account?{' '}
                   <Link to='/signup' className='underline underline-offset-4'>
                     Sign up
@@ -57,7 +77,7 @@ export default function Login() {
                     className={errors.email ? 'border-red-500 focus-visible:ring-red-500' : ''}
                     required
                   />
-                  {errors.email && <p className='text-xs text-red-500 mt-1'>{errors.email}</p>}
+                  {errors.email && <p className='mt-1 text-xs text-red-500'>{errors.email}</p>}
                 </div>
 
                 {/* Password */}
@@ -72,7 +92,7 @@ export default function Login() {
                     className={errors.password ? 'border-red-500 focus-visible:ring-red-500' : ''}
                     required
                   />
-                  {errors.password && <p className='text-xs text-red-500 mt-1'>{errors.password}</p>}
+                  {errors.password && <p className='mt-1 text-xs text-red-500'>{errors.password}</p>}
                 </div>
 
                 <div className='text-right text-xs'>
@@ -81,14 +101,14 @@ export default function Login() {
                   </Link>
                 </div>
 
-                <Button type='submit' className='w-full mt-2'>
-                  Login
+                <Button type='submit' className='mt-2 w-full' disabled={isSubmitting}>
+                  {isSubmitting ? 'Logging in…' : 'Login'}
                 </Button>
               </div>
             </div>
           </form>
 
-          <div className='text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4'>
+          <div className='text-muted-foreground text-center text-xs *:[a]:underline *:[a]:underline-offset-4 *:[a]:hover:text-primary'>
             By clicking continue, you agree to our <a href='#'>Terms of Service</a> and <a href='#'>Privacy Policy</a>.
           </div>
         </div>

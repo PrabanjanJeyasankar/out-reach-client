@@ -1,8 +1,14 @@
 export interface AuthFormValues {
+  username?: string
   email?: string
   password?: string
   confirmPassword?: string
   otp?: string
+}
+
+export const validateUsername = (username?: string): string | undefined => {
+  if (!username?.trim()) return 'Name is required'
+  return undefined
 }
 
 export const validateEmail = (email?: string): string | undefined => {
@@ -29,8 +35,13 @@ export const validateOTP = (otp?: string): string | undefined => {
   return undefined
 }
 
-export const validateAuthForm = (values: AuthFormValues) => {
+export const validateAuthForm = (values: AuthFormValues): AuthFormValues => {
   const errors: AuthFormValues = {}
+
+  if (values.username !== undefined) {
+    const usernameError = validateUsername(values.username)
+    if (usernameError) errors.username = usernameError
+  }
 
   if (values.email !== undefined) {
     const emailError = validateEmail(values.email)

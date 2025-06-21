@@ -12,13 +12,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
-import { useAuthStore } from '@/store/authentication'
+import { useAuthStore } from '@/store/auth-store'
 
 export function NavUser() {
   const { isMobile } = useSidebar()
   const { user, clearUser } = useAuthStore()
 
-  const name = user?.name || 'Guest User'
+  const name = user?.username || 'Guest User'
   const email = user?.email || 'guest@example.com'
 
   return (

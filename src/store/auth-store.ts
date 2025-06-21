@@ -1,10 +1,9 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 type User = {
-  name: string
+  username: string
   email: string
-  token: string
 }
 
 type AuthStore = {
@@ -19,13 +18,11 @@ export const useAuthStore = create<AuthStore>()(
     (set) => ({
       user: null,
       isAuthenticated: false,
-
       setUser: (user) =>
         set({
           user,
           isAuthenticated: true,
         }),
-
       clearUser: () =>
         set({
           user: null,
@@ -33,7 +30,12 @@ export const useAuthStore = create<AuthStore>()(
         }),
     }),
     {
-      name: 'auth-storage', // localStorage key
+      name: 'auth-storage',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        user: state.user,
+        isAuthenticated: state.isAuthenticated,
+      }),
     }
   )
 )

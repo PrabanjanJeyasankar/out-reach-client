@@ -45,7 +45,6 @@ export default function CsvUploadInfoModal({ children }: CsvUploadInfoModalProps
             </p>
           </DialogHeader>
 
-          {/* Required & Optional Fields */}
           <Card className='bg-white dark:bg-black border border-gray-200 dark:border-gray-800'>
             <CardHeader className='flex flex-row items-center gap-2 mb-2'>
               <CheckCircle className='w-5 h-5 text-green-600' />
@@ -76,7 +75,6 @@ export default function CsvUploadInfoModal({ children }: CsvUploadInfoModalProps
             </CardContent>
           </Card>
 
-          {/* Example CSV Section */}
           <Card className='bg-white dark:bg-black border border-gray-200 dark:border-gray-800 mt-6'>
             <CardHeader className='flex flex-row items-center gap-2 mb-2'>
               <FileText className='w-5 h-5 text-blue-600' />
@@ -109,7 +107,6 @@ Jane,Smith,jane.smith@company.com,StartupInc,Developer,Frontend`}
               </ul>
             </div>
 
-            {/* File Requirements */}
             <div className='flex flex-wrap gap-2 text-xs text-gray-600 dark:text-gray-400'>
               <span className='bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded'>Max file size: 10MB</span>
               <span className='bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded'>Supported: .csv files only</span>

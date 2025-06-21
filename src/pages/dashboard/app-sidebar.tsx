@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { HardDriveDownload, House, ScrollText, Settings2 } from 'lucide-react'
+import { CalendarClock, HardDriveDownload, House, ScrollText, Settings2 } from 'lucide-react'
 
 import {
   Sidebar,
@@ -43,6 +43,11 @@ const data = {
       title: 'Settings',
       url: '/settings',
       icon: Settings2,
+    },
+    {
+      title: 'History',
+      url: '/history',
+      icon: CalendarClock,
     },
   ],
 }
